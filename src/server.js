@@ -1,33 +1,23 @@
 import http from 'node:http'
-
-// HTTP
-//  - Método HTTP
-//  - URL
-
-// GET => Buscar um recurso no back-end
-// POST => Criar um recurso no back-end
-// PUT => Atualizar um recurso no back-end
-// PATCH => Atualizar uma informação específica de um recurso no back-end
-// DELETER => Deletar um recurso do back-end
-
+import { json } from './middlewares/json.js'
 
 const users = []
 
-const server = http.createServer((req, res) => {
+const server = http.createServer(async(req, res) => {
      const {method, url} = req
 
+    await json(req, res)
+
      if (method == 'GET' && url == '/users') {
-          return res
-          .setHeader('Content-type', 'application/json')
-          .end(JSON.stringify(users))
+          return res.end(JSON.stringify(users))
      }
 
      if (method == 'POST' && url == '/users') {
-
+          const {name, email} = req.body
           users.push({
                id: 1,
-               name: 'John Doe',
-               email: 'johndoe@example.com'
+               name,
+               email
           })
 
           return res.writeHead(201).end()
