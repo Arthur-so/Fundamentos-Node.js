@@ -22,7 +22,7 @@ const server = http.createServer(async(req, res) => {
           const {query, ...params} = routeParams.groups
 
           req.params = params
-          req.query = extreactQueryParams(query)
+          req.query = query ? extreactQueryParams(query) : ''
 
           return route.handler(req, res)
      }
